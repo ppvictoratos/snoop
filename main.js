@@ -10,6 +10,9 @@ const RUN_SPEED = 2;         // px per frame at 60fps
 const RUN_FRAME_TICKS = 6;   // frames between run-cycle steps
 const WAG_TICKS = 20;        // frames between tail wags
 
+const DEMO = new URLSearchParams(location.search).has('demo');  // ?demo: run forever, for fun
+const DEMO_REST_MS = 2000;   // sit and wag between demo laps
+
 const snoop = { x: 40, dir: 1, tick: 0, frame: 0, scanning: false };
 let stopScanFn = null;
 
@@ -91,7 +94,10 @@ function startScan() {
   status.textContent = 'Scanning… 0%';
   stopScanFn = scan(
     (p) => { status.textContent = `Scanning… ${Math.round(p * 100)}%`; },
-    () => stopScan('Scan complete. Snoop is sitting.'),
+    () => {
+      stopScan('Scan complete. Snoop is sitting.');
+      if (DEMO) setTimeout(startScan, DEMO_REST_MS);
+    },
   );
 }
 
@@ -114,3 +120,4 @@ toggle.addEventListener('click', () => {
 window.addEventListener('resize', resize);
 resize();
 requestAnimationFrame(loop);
+if (DEMO) startScan();
