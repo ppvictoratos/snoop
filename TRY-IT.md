@@ -54,13 +54,13 @@ for f in "" index.html style.css sprite.js main.js; do
 done
 ```
 
-Check that every sprite frame is 24×16 and uses only palette colors:
+Check that every sprite frame is the right size and uses only palette colors:
 
 ```sh
 node -e '
-const { SNOOP, SNOOP_PALETTE } = require("./sprite.js");
+const { SNOOP, SNOOP_PALETTE, SNOOP_W, SNOOP_H } = require("./sprite.js");
 const frames = [...SNOOP.run, ...SNOOP.idle];
-const ok = frames.every(g => g.length === 16 && g.every(r => r.length === 24 && r.every(k => k === "." || k in SNOOP_PALETTE)));
+const ok = frames.every(g => g.length === SNOOP_H && g.every(r => r.length === SNOOP_W && r.every(k => k === "." || k in SNOOP_PALETTE)));
 console.log(ok ? "sprite OK (" + frames.length + " frames)" : "sprite BROKEN");
 '
 ```

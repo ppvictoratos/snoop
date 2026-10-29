@@ -9,11 +9,12 @@ const SPRITE_PX_H = SNOOP_H * SNOOP_SCALE;
 const RUN_SPEED = 2;         // px per frame at 60fps
 const RUN_FRAME_TICKS = 6;   // frames between run-cycle steps
 const WAG_TICKS = 20;        // frames between tail wags
+const EAR_FLOP_TICKS = 12;   // frames the ear stays flopped after turning
 
 const DEMO = new URLSearchParams(location.search).has('demo');  // ?demo: run forever, for fun
 const DEMO_REST_MS = 2000;   // sit and wag between demo laps
 
-const snoop = { x: 40, dir: 1, tick: 0, frame: 0, scanning: false };
+const snoop = { x: 40, dir: 1, tick: 0, frame: 0, flop: 0, scanning: false };
 let stopScanFn = null;
 
 // Placeholder scan: fakes progress so the animation can be tested.
@@ -49,18 +50,25 @@ function drawGrid(grid, x, y, flip) {
   }
 }
 
+// Turning around flops the ear for a moment.
+function turn(dir) {
+  if (snoop.dir !== dir) snoop.flop = EAR_FLOP_TICKS;
+  snoop.dir = dir;
+}
+
 function update() {
   snoop.tick++;
   if (!snoop.scanning) return;
 
+  if (snoop.flop > 0) snoop.flop--;
   snoop.x += RUN_SPEED * snoop.dir;
   const maxX = canvas.width - SPRITE_PX_W;
   if (snoop.x <= 0) {
     snoop.x = 0;
-    snoop.dir = 1;
+    turn(1);
   } else if (snoop.x >= maxX) {
     snoop.x = maxX;
-    snoop.dir = -1;
+    turn(-1);
   }
 
   if (snoop.tick % RUN_FRAME_TICKS === 0) {
@@ -75,8 +83,9 @@ function render() {
   ctx.fillStyle = SNOOP_PALETTE.D;
   ctx.fillRect(0, h - GROUND_H, canvas.width, GROUND_H);
 
+  const runFrames = snoop.flop > 0 ? SNOOP.runFlop : SNOOP.run;
   const grid = snoop.scanning
-    ? SNOOP.run[snoop.frame]
+    ? runFrames[snoop.frame]
     : SNOOP.idle[Math.floor(snoop.tick / WAG_TICKS) % SNOOP.idle.length];
   const spriteY = h - GROUND_H - SPRITE_PX_H;
   drawGrid(grid, snoop.x, spriteY, snoop.dir < 0);
