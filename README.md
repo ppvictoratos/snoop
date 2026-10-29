@@ -6,8 +6,6 @@ Snoop is a pixel-art dog who runs back and forth while a scan is going and sits 
 
 ![Snoop running during a scan](docs/snoop-running.png)
 
-![Snoop sitting while idle](docs/snoop-idle.png)
-
 ## Run locally
 
 ```bash
