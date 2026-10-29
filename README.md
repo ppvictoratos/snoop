@@ -4,6 +4,8 @@ Sniffing out object oriented protocols.
 
 Snoop is a pixel-art dog who runs back and forth while a scan is going and sits and wags when it's done. Plain HTML, CSS and JavaScript.
 
+He still needs some training but the thought is he will be able to be dropped into any codebase, provide an overlay visual of him sniffing; and be able to tell you where you can make some augments to your codebase.
+
 ![Snoop running during a scan](docs/snoop-running.png)
 
 ## Run locally
