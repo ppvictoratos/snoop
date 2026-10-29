@@ -2,7 +2,7 @@
 
 Sniffing out object oriented protocols.
 
-Snoop is a pixel-art dog who runs back and forth while a scan is going and sits and wags when it's done. Plain HTML, CSS and JavaScript. No build, no dependencies, just Canvas 2D.
+Snoop is a pixel-art dog who runs back and forth while a scan is going and sits and wags when it's done. Plain HTML, CSS and JavaScript.
 
 ![Snoop running during a scan](docs/snoop-running.png)
 
